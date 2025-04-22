@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Users - Admin | FuelNow</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+<nav class="navbar navbar-dark bg-warning">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="/admin/dashboard">🛢️ FuelNow Admin</a>
+    <div class="d-flex flex-wrap gap-2">
+      <a href="/admin/orders" class="btn btn-outline-dark">Orders</a>
+      <a href="/admin/users" class="btn btn-outline-dark">Users</a>
+      <a href="/admin/fuel_types" class="btn btn-outline-dark">Fuel Types</a>
+      <a href="/admin/fuel" class="btn btn-outline-dark">Add Fuel</a>
+      <a href="/logout" class="btn btn-dark">Logout</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container py-5">
+  <h2 class="mb-4">Manage Users</h2>
+
+  <div class="table-responsive">
+    <table class="table table-bordered text-center align-middle">
+      <thead class="table-warning">
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Created</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+          <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.role }}</td>
+            <td>{{ user.created_at.strftime('%Y-%m-%d') }}</td>
+            <td>
+              {% if session['user_id'] != user.id %}
+                <form action="/admin/delete_user" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                  <input type="hidden" name="user_id" value="{{ user.id }}">
+                  <button class="btn btn-sm btn-danger">Delete</button>
+                </form>
+              {% else %}
+                <span class="text-muted">Self</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<footer class="text-center text-dark py-4 bg-warning mt-auto">
+  &copy; 2024 FuelNow Admin. All rights reserved.
+</footer>
+</body>
+</html>

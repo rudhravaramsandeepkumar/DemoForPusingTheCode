@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Details - FuelNow</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+<nav class="navbar navbar-dark bg-warning">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/user/dashboard">⛽ FuelNow</a>
+    <div class="d-flex">
+      <a href="/book_fuel" class="btn btn-outline-dark me-2">Order Fuel</a>
+      <a href="/logout" class="btn btn-dark">Logout</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container py-5">
+  <h2 class="mb-4">Order #{{ order.id }} Details</h2>
+
+  <div class="row g-4">
+    <div class="col-md-6">
+      <div class="p-4 bg-light rounded shadow-sm">
+        <h5 class="mb-3">Fuel Information</h5>
+        <p><strong>Name:</strong> {{ fuel.name }}</p>
+        <p><strong>Type:</strong> {{ fuel_type.type_name if fuel_type else 'N/A' }}</p>
+        <p><strong>Price per Liter:</strong> ₹{{ fuel.price }}</p>
+        <p><strong>Quantity:</strong> {{ order.quantity }} L</p>
+        <p><strong>Total Amount:</strong> ₹{{ order.total_amount }}</p>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="p-4 bg-white border rounded shadow-sm">
+        <h5 class="mb-3">Delivery Info</h5>
+        <p><strong>Slot:</strong> {{ delivery.delivery_time }}</p>
+        <p><strong>Address:</strong><br>{{ order.address }}</p>
+        <p><strong>Status:</strong>
+          {% if order.status == 'Pending' %}
+            <span class="badge bg-warning text-dark">Pending</span>
+          {% elif order.status == 'Cancelled' %}
+            <span class="badge bg-danger">Cancelled</span>
+          {% elif order.status == 'Delivered' %}
+            <span class="badge bg-success">Delivered</span>
+          {% else %}
+            <span class="badge bg-secondary">{{ order.status }}</span>
+          {% endif %}
+        </p>
+
+        {% if order.status == 'Pending' %}
+          <form action="/cancel_order" method="POST" onsubmit="return confirm('Are you sure you want to cancel this order?');">
+            <input type="hidden" name="order_id" value="{{ order.id }}">
+            <button class="btn btn-danger mt-3 w-100">Cancel This Order</button>
+          </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="text-center text-dark py-4 bg-warning mt-auto">
+  &copy; 2024 FuelNow. All rights reserved.
+</footer>
+</body>
+</html>

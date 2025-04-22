@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Fuel - Admin | FuelNow</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+<nav class="navbar navbar-dark bg-warning">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="/admin/dashboard">🛢️ FuelNow Admin</a>
+    <div class="d-flex flex-wrap gap-2">
+      <a href="/admin/orders" class="btn btn-outline-dark">Orders</a>
+      <a href="/admin/users" class="btn btn-outline-dark">Users</a>
+      <a href="/admin/fuel_types" class="btn btn-outline-dark">Fuel Types</a>
+      <a href="/admin/fuel" class="btn btn-outline-dark">Add Fuel</a>
+      <a href="/logout" class="btn btn-dark">Logout</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container py-5">
+  <h2 class="mb-4">Add New Fuel</h2>
+
+  <form action="/admin/add_fuel" method="POST">
+    <div class="mb-3">
+      <label for="name" class="form-label">Fuel Name</label>
+      <input type="text" class="form-control" name="name" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="fuel_type_id" class="form-label">Fuel Type</label>
+      <select class="form-select" name="fuel_type_id" required>
+        <option value="" disabled selected>Select fuel type</option>
+        {% for t in fuel_types %}
+          <option value="{{ t.id }}">{{ t.type_name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="price" class="form-label">Price (₹ per liter)</label>
+      <input type="number" step="0.01" class="form-control" name="price" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="stock" class="form-label">Initial Stock (liters)</label>
+      <input type="number" step="0.01" class="form-control" name="stock" required>
+    </div>
+
+    <button type="submit" class="btn btn-success">Add Fuel</button>
+  </form>
+</div>
+
+<footer class="text-center text-dark py-4 bg-warning mt-auto">
+  &copy; 2024 FuelNow Admin. All rights reserved.
+</footer>
+</body>
+</html>
